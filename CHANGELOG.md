@@ -2,9 +2,7 @@
 
 All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project uses [Semantic Versioning](https://semver.org/).
 
-<!-- Draft for v0.1.0: confirm the date and add any last-minute changes on release day. -->
-
-## [0.1.0] - 2026-10-11
+## [0.1.0] - 2026-10-12
 
 The first public release. The user interface is in Korean; an English UI is planned for v0.2. Development before this release happened in a private repository, so its history is not included here.
 
