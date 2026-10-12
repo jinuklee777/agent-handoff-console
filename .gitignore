@@ -1,0 +1,16 @@
+build/
+DerivedData/
+*.xcuserdatad
+xcuserdata/
+.DS_Store
+*.dSYM/
+design-draft/_live/
+design-draft/brand/_png/
+__pycache__/
+
+# Claude Code 디자인 캔버스를 내보낸 폴더 (앱과 무관, 작업을 통째로 커밋할 때 딸려 들어오지 않게)
+.design-main/
+
+# 개인 작업 · 임시 산출물 (커밋하지 않는다)
+output/
+tmp/

@@ -1,0 +1,20 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}svg{display:block}</style></head><body>
+<svg viewBox="0 0 1024 1024" width="1024" height="1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#ECF0F5"/></linearGradient>
+    <linearGradient id="dot1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E48A6B"/><stop offset="1" stop-color="#CF6A48"/></linearGradient>
+    <linearGradient id="dot2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E293B"/><stop offset="1" stop-color="#0B1120"/></linearGradient>
+  </defs>
+  <!-- macOS 아이콘 격자: 1024 캔버스 · 824 둥근 사각(여백 100) · 모서리 반지름 ≈ 22.4% -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#g)"/>
+  <rect x="101.5" y="101.5" width="821" height="821" rx="183.5" fill="none" stroke="#0F172A" stroke-opacity=".10" stroke-width="3"/>
+  <!-- 넘기는 고리: 잉크 → 테라코타 -->
+  <g transform="translate(0 4)">
+    <path d="M338 622 C 338 402, 686 402, 686 402" fill="none" stroke="#0F172A" stroke-width="62" stroke-linecap="round"/>
+    <path d="M686 402 C 686 622, 338 622, 338 622" fill="none" stroke="#D97757" stroke-width="62" stroke-linecap="round"/>
+    <circle cx="338" cy="622" r="108" fill="url(#dot1)"/>
+    <circle cx="686" cy="402" r="108" fill="url(#dot2)"/>
+  </g>
+</svg>
+</body></html>

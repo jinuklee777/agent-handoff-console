@@ -1,0 +1,71 @@
+name: Bug report / 버그 신고
+description: Something in the app doesn't work as described. / 앱이 설명과 다르게 동작합니다.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. English or Korean is fine. / 한국어로 써도 됩니다.
+
+        - **Security problems:** please don't use this form. Follow [SECURITY.md](https://github.com/jinuklee777/agent-handoff-console/blob/main/SECURITY.md) instead.
+        - Remove anything private from logs and screenshots first: API keys, tokens, file contents, paths you don't want to share.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened? / 무슨 일이 있었나요?
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce / 다시 일으키는 방법
+      placeholder: |
+        1.
+        2.
+        3.
+  - type: input
+    id: app-version
+    attributes:
+      label: App and macOS version / 앱 · macOS 버전
+      description: Settings › About › 버전 복사 (설정 › 정보 › 버전 복사) copies both.
+      placeholder: Agent Handoff Console 0.1.0 (…) · macOS …
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install the app? / 설치 방법
+      options:
+        - Release zip
+        - Built from source
+    validations:
+      required: true
+  - type: dropdown
+    id: agents
+    attributes:
+      label: Agents involved / 관련된 에이전트
+      multiple: true
+      options:
+        - Claude Code
+        - Codex
+        - Antigravity
+        - Not agent-specific / 에이전트와 무관
+  - type: textarea
+    id: cli-versions
+    attributes:
+      label: CLI versions / CLI 버전
+      description: |
+        Output of `claude --version`, `codex --version` or `agy --version` for the agents involved.
+        Settings › Advanced › CLI 확인 기록 › 기록 보기… › 모두 복사 copies the app's own record of the CLIs it checked.
+      render: text
+  - type: input
+    id: mac
+    attributes:
+      label: Mac / 기종
+      placeholder: Apple silicon (M-series) or Intel
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots or logs / 화면 · 기록
+      description: Optional. Remove anything private first.

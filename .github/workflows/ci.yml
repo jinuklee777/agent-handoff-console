@@ -1,0 +1,91 @@
+# 앱을 빌드하고 오프라인 시험(inttest offline)을 돌린다. 실제 CLI 를 부르지 않는다.
+# 판정은 종료 코드만이 아니라 요약 줄 "합계 N/N 통과" 와 확인 수의 하한으로 한다 — 시험 묶음이
+# 중간에 조용히 끝나도 종료 코드는 0 일 수 있다.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-and-test:
+    runs-on: macos-26
+    timeout-minutes: 75
+    env:
+      # README · CONTRIBUTING 이 적은 최소 툴체인(Xcode 26)으로 빌드되는지 본다.
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      # inttest offline 의 확인 수 하한. 시험을 지우면 함께 낮춘다.
+      MIN_CHECKS: "5000"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Toolchain
+        run: |
+          sw_vers
+          xcodebuild -version
+          swift --version
+
+      - name: Public replay fixtures
+        run: |
+          python3 -m unittest discover -s scripts/probe/claude-background -p 'test_*.py'
+          python3 scripts/probe/claude-background/sanitize.py --check scripts/probe/claude-background/logs
+          python3 scripts/probe/codex-background/sanitize.py --check scripts/probe/codex-background/logs
+
+      - name: Test files are in build-inttest.sh
+        run: |
+          missing=0
+          for f in scripts/inttest/*.swift; do
+            if ! grep -qF "$f" scripts/build-inttest.sh; then
+              echo "::error file=$f::scripts/build-inttest.sh 의 소스 목록에 없다"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Build the app (Debug)
+        run: |
+          xcodebuild -project AgentHandoffConsole.xcodeproj -scheme AgentHandoffConsole \
+            -configuration Debug -derivedDataPath build/DerivedData.noindex \
+            -onlyUsePackageVersionsFromResolvedFile CODE_SIGNING_ALLOWED=NO -quiet build
+
+      - name: Build the test harness
+        run: ./scripts/build-inttest.sh
+
+      - name: inttest offline
+        timeout-minutes: 30
+        run: |
+          set -o pipefail
+          ./build/inttest/inttest offline 2>&1 | tee build/inttest-offline.log
+          re='^합계 ([0-9]+)/([0-9]+) 통과$'
+          summary=$(grep -a -E "$re" build/inttest-offline.log | tail -n 1 || true)
+          if [[ ! "$summary" =~ $re ]]; then
+            echo "::error::요약 줄(합계 N/N 통과)이 없다 — 시험 묶음이 중간에 끝났다"
+            exit 1
+          fi
+          passed=${BASH_REMATCH[1]}
+          total=${BASH_REMATCH[2]}
+          if (( passed != total )); then
+            echo "::error::$((total - passed))개 실패 ($passed/$total)"
+            exit 1
+          fi
+          if (( total < MIN_CHECKS )); then
+            echo "::error::확인 수 $total 이 하한 $MIN_CHECKS 보다 적다 — 시험 묶음이 빠졌다"
+            exit 1
+          fi
+          echo "합계 $passed/$total 통과 (하한 $MIN_CHECKS)"

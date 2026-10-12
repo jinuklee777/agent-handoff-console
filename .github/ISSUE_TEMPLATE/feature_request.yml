@@ -1,0 +1,36 @@
+name: Feature request / 기능 제안
+description: Suggest an improvement or a new feature. / 고칠 점이나 새 기능을 제안합니다.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        English or Korean is fine. / 한국어로 써도 됩니다.
+        An English UI is already planned for v0.2, so there's no need to request it.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve? / 어떤 불편을 푸나요?
+      description: Describe the situation and what gets in your way today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to happen? / 어떻게 되면 좋을까요?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you've considered / 생각해 본 다른 방법
+  - type: dropdown
+    id: agents
+    attributes:
+      label: Agents involved / 관련된 에이전트
+      multiple: true
+      options:
+        - Claude Code
+        - Codex
+        - Antigravity
+        - Not agent-specific / 에이전트와 무관

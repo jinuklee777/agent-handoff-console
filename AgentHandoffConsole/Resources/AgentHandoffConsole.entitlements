@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- 1차 버전은 Mac App Store 배포 대상이 아니며 App Sandbox 없이 로컬 실행한다.
+	     CLI(claude, codex)를 사용자의 홈 디렉터리/임의 프로젝트 경로에서 실행해야 하므로 샌드박스를 켜지 않는다.
+	     Claude/Codex 자체의 승인·샌드박스 정책은 우회하지 않는다. -->
+	<key>com.apple.security.app-sandbox</key>
+	<false/>
+</dict>
+</plist>
